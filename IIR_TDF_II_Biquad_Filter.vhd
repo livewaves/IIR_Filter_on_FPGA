@@ -16,9 +16,9 @@ entity Biquad_Filter is
 				);
 
 		Port ( 
-					Clock 			: in  STD_LOGIC;
-					Input_Signal 	: in  signed (13 downto 0);
-					Output_Signal	: out	signed (14 downto 0)
+					Clock 				: in  STD_LOGIC;
+					Input_Signal 			: in  signed (13 downto 0);
+					Output_Signal			: out	signed (14 downto 0)
 				);
 				
 end Biquad_Filter;
@@ -28,11 +28,11 @@ architecture Behavioral of Biquad_Filter is
 	------	Internal signal for buffering the input and output ports.
 	signal	Input_Signal_Int		:	signed (13 downto 0)		:=	(others=>'0');
 	signal	Output_Signal_Int		:	signed (14 downto 0)		:=	(others=>'0');
-	signal	Input_Signal_Scaled	:	signed (26 downto 0)		:=	(others=>'0');
+	signal	Input_Signal_Scaled		:	signed (26 downto 0)		:=	(others=>'0');
 	
 	------	Delay Accumulator registers.
-	signal	Delay_Accumulator_D1	:	signed (27 downto 0)		:=	(others=>'0');
-	signal	Delay_Accumulator_D2	:	signed (27 downto 0)		:=	(others=>'0');
+	signal	Delay_Accumulator_D1		:	signed (27 downto 0)		:=	(others=>'0');
+	signal	Delay_Accumulator_D2		:	signed (27 downto 0)		:=	(others=>'0');
 		
 	------	Feed-Forward Multiplier Pipeline Registers.
 	signal	Multiplier_b0_Pipe		:	signed (26 downto 0)		:=	(others=>'0');
@@ -61,8 +61,8 @@ begin
 			Multiplier_b2_Pipe			<=	to_signed(Coeff_b2,13) * Input_Signal_Int;
 			
 			-- IIR multiply and accumulate
-			Delay_Accumulator_D2		<=	Multiplier_b2_Pipe + to_signed(Coeff_a2,13) * Output_Signal_Int;
-			Delay_Accumulator_D1		<=	Multiplier_b1_Pipe + to_signed(Coeff_a1,13) * Output_Signal_Int + Delay_Accumulator_D2;
+			Delay_Accumulator_D2			<=	Multiplier_b2_Pipe + to_signed(Coeff_a2,13) * Output_Signal_Int;
+			Delay_Accumulator_D1			<=	Multiplier_b1_Pipe + to_signed(Coeff_a1,13) * Output_Signal_Int + Delay_Accumulator_D2;
 												
 		end if;
 	
